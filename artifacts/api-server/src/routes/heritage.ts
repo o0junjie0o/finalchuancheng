@@ -1,8 +1,8 @@
 import { Router, type IRouter } from "express";
 import OpenAI from "openai";
 import { db } from "@workspace/db";
-import { heritageItemsTable, artisansTable, artisanServicesTable, quizQuestionsTable, productsTable, activitiesTable } from "@workspace/db";
-import { eq, and, like, sql } from "drizzle-orm";
+import { heritageItemsTable, artisansTable, artisanServicesTable, quizQuestionsTable, productsTable, activitiesTable, quizLeaderboardTable } from "@workspace/db";
+import { eq, and, like, sql, desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -324,6 +324,49 @@ router.post("/ai/generate-image", async (req, res) => {
     }
     return handleAiError(err, res);
   }
+});
+
+router.get("/quiz/leaderboard", async (_req, res) => {
+  const entries = await db
+    .select({
+      id: quizLeaderboardTable.id,
+      nickname: quizLeaderboardTable.nickname,
+      correct: quizLeaderboardTable.correct,
+      time: quizLeaderboardTable.time,
+      createdAt: quizLeaderboardTable.createdAt,
+    })
+    .from(quizLeaderboardTable)
+    .orderBy(desc(quizLeaderboardTable.correct), quizLeaderboardTable.time)
+    .limit(10);
+
+  res.json({ leaderboard: entries });
+});
+
+router.post("/quiz/leaderboard", async (req, res) => {
+  const { nickname, correct, time } = req.body as { nickname: string; correct: number; time: number };
+
+  if (!nickname || typeof correct !== "number" || typeof time !== "number") {
+    return res.status(400).json({ error: "nickname, correct, time are required" });
+  }
+  if (nickname.length > 20 || correct < 0 || correct > 10 || time < 0) {
+    return res.status(400).json({ error: "Invalid values" });
+  }
+
+  await db.insert(quizLeaderboardTable).values({ nickname, correct, time });
+
+  const leaderboard = await db
+    .select({
+      id: quizLeaderboardTable.id,
+      nickname: quizLeaderboardTable.nickname,
+      correct: quizLeaderboardTable.correct,
+      time: quizLeaderboardTable.time,
+      createdAt: quizLeaderboardTable.createdAt,
+    })
+    .from(quizLeaderboardTable)
+    .orderBy(desc(quizLeaderboardTable.correct), quizLeaderboardTable.time)
+    .limit(10);
+
+  res.json({ leaderboard });
 });
 
 router.get("/stats", async (_req, res) => {

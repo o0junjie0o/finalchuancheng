@@ -110,3 +110,13 @@ export const activitiesTable = pgTable("activities", {
 export const insertActivitySchema = createInsertSchema(activitiesTable).omit({ id: true, createdAt: true });
 export type InsertActivity = z.infer<typeof insertActivitySchema>;
 export type Activity = typeof activitiesTable.$inferSelect;
+
+export const quizLeaderboardTable = pgTable("quiz_leaderboard", {
+  id: serial("id").primaryKey(),
+  nickname: text("nickname").notNull(),
+  correct: integer("correct").notNull(),
+  time: integer("time").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type QuizLeaderEntry = typeof quizLeaderboardTable.$inferSelect;
