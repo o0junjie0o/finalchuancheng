@@ -16,7 +16,7 @@ import { clsx } from "clsx";
 type LeaderEntry = { nickname: string; correct: number; time: number };
 type CompPhase = "idle" | "nickname" | "playing" | "result";
 
-const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const LEADERBOARD_KEY = "xiao-quiz-leaderboard-v1";
 
 function formatTime(sec: number) {
   const m = Math.floor(sec / 60)
@@ -26,37 +26,34 @@ function formatTime(sec: number) {
   return `${m}:${s}`;
 }
 
-async function fetchLeaderboard(): Promise<LeaderEntry[]> {
+function loadLeaderboard(): LeaderEntry[] {
   try {
-    const res = await fetch(`${API_BASE}/api/quiz/leaderboard`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.leaderboard ?? []) as LeaderEntry[];
-  } catch {
-    return [];
-  }
+    const raw = localStorage.getItem(LEADERBOARD_KEY);
+    if (raw) return JSON.parse(raw) as LeaderEntry[];
+  } catch (_) {}
+  return [];
 }
 
-async function submitScore(entry: LeaderEntry): Promise<{ leaderboard: LeaderEntry[]; inTop10: boolean }> {
-  try {
-    const res = await fetch(`${API_BASE}/api/quiz/leaderboard`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(entry),
-    });
-    if (!res.ok) {
-      const board = await fetchLeaderboard();
-      return { leaderboard: board, inTop10: false };
-    }
-    const data = await res.json();
-    const board: LeaderEntry[] = data.leaderboard ?? [];
-    const inTop10 = board.some(
-      (e) => e.nickname === entry.nickname && e.correct === entry.correct && e.time === entry.time
-    );
-    return { leaderboard: board, inTop10 };
-  } catch {
-    return { leaderboard: [], inTop10: false };
-  }
+function saveLeaderboard(board: LeaderEntry[]) {
+  localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(board));
+}
+
+function insertAndTrim(
+  board: LeaderEntry[],
+  entry: LeaderEntry,
+): LeaderEntry[] {
+  const next = [...board, entry];
+  next.sort((a, b) => b.correct - a.correct || a.time - b.time);
+  return next.slice(0, 10);
+}
+
+function isInTop10(board: LeaderEntry[], entry: LeaderEntry): boolean {
+  if (board.length < 10) return true;
+  const last = board[board.length - 1];
+  return (
+    entry.correct > last.correct ||
+    (entry.correct === last.correct && entry.time <= last.time)
+  );
 }
 
 export default function Quiz() {
@@ -76,15 +73,12 @@ export default function Quiz() {
   const [compShowResult, setCompShowResult] = useState(false);
   const [compCorrect, setCompCorrect] = useState(0);
   const [elapsed, setElapsed] = useState(0);
-  const [leaderboard, setLeaderboard] = useState<LeaderEntry[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderEntry[]>(() =>
+    loadLeaderboard(),
+  );
   const [myEntry, setMyEntry] = useState<LeaderEntry | null>(null);
   const [myInTop10, setMyInTop10] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    fetchLeaderboard().then(setLeaderboard);
-  }, []);
 
   const questions = [
     {
@@ -309,6 +303,7 @@ export default function Quiz() {
     }
     setNickname(name);
     setNicknameError(false);
+    // Randomly pick 10 questions (no repeat)
     const shuffled = [...questions]
       .sort(() => Math.random() - 0.5)
       .slice(0, 10);
@@ -330,7 +325,48 @@ export default function Quiz() {
     }
   };
 
+  const handleCompNext = () => {
+    if (compCurrentQ < compQuestions.length - 1) {
+      setCompCurrentQ((q) => q + 1);
+      setCompSelected(null);
+      setCompShowResult(false);
+    } else {
+      // Finish: stop timer, save result
+      if (timerRef.current) clearInterval(timerRef.current);
+      const finalCorrect =
+        compCorrect +
+        (compSelected === compQuestions[compCurrentQ].correct ? 1 : 0);
+      // Re-derive correct count to avoid stale closure
+      // Actually, compCorrect already reflects previous answers; current answer already counted in handleCompSelect
+      const entry: LeaderEntry = {
+        nickname,
+        correct:
+          compCorrect +
+          (compSelected === compQuestions[compCurrentQ].correct &&
+          !compShowResult
+            ? 1
+            : 0),
+        time: elapsed,
+      };
+      // Since handleCompSelect already incremented compCorrect before this runs:
+      const finalEntry: LeaderEntry = {
+        nickname,
+        correct: compCorrect,
+        time: elapsed,
+      };
+      const prevBoard = loadLeaderboard();
+      const inTop = isInTop10(prevBoard, finalEntry);
+      const newBoard = inTop ? insertAndTrim(prevBoard, finalEntry) : prevBoard;
+      if (inTop) saveLeaderboard(newBoard);
+      setLeaderboard(inTop ? newBoard : prevBoard);
+      setMyEntry(finalEntry);
+      setMyInTop10(inTop);
+      setCompPhase("result");
+    }
+  };
+
   const handleCompNextWrapped = () => {
+    // Need to compute final correct before state updates clear
     if (compCurrentQ < compQuestions.length - 1) {
       setCompCurrentQ((q) => q + 1);
       setCompSelected(null);
@@ -347,14 +383,14 @@ export default function Quiz() {
       correct: compCorrect,
       time: elapsed,
     };
+    const prevBoard = loadLeaderboard();
+    const inTop = isInTop10(prevBoard, finalEntry);
+    const newBoard = inTop ? insertAndTrim(prevBoard, finalEntry) : prevBoard;
+    if (inTop) saveLeaderboard(newBoard);
+    setLeaderboard(inTop ? newBoard : prevBoard);
     setMyEntry(finalEntry);
-    setSubmitting(true);
-    submitScore(finalEntry).then(({ leaderboard: newBoard, inTop10 }) => {
-      setLeaderboard(newBoard);
-      setMyInTop10(inTop10);
-      setSubmitting(false);
-      setCompPhase("result");
-    });
+    setMyInTop10(inTop);
+    setCompPhase("result");
   };
 
   const resetCompetition = () => {
@@ -367,7 +403,6 @@ export default function Quiz() {
     setCompCorrect(0);
     setElapsed(0);
     setMyEntry(null);
-    fetchLeaderboard().then(setLeaderboard);
   };
 
   const cq = compQuestions[compCurrentQ];
@@ -486,7 +521,7 @@ export default function Quiz() {
               竞赛模式
             </h3>
             <p className="text-muted-foreground mb-6 leading-relaxed max-w-md mx-auto">
-              随机抽取10道孝文化题目，限时答题，冲榜争夺排行榜前十！成绩实时同步，所有人共享同一榜单，接受挑战吗？
+              随机抽取10道孝文化题目，限时答题，冲榜争夺排行榜前十！成绩永久保存，接受挑战吗？
             </p>
             <button
               onClick={startNicknamePhase}
@@ -682,22 +717,6 @@ export default function Quiz() {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* ---- Submitting overlay ---- */}
-      <AnimatePresence>
-        {submitting && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          >
-            <div className="bg-card rounded-3xl shadow-2xl border border-border p-10 text-center">
-              <div className="text-4xl mb-4 animate-spin inline-block">⏳</div>
-              <p className="text-lg font-bold text-foreground">正在提交成绩…</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       {/* ---- Competition result overlay ---- */}
       <AnimatePresence>
         {compPhase === "result" && myEntry && (
@@ -748,7 +767,7 @@ export default function Quiz() {
             </div>
 
             <div className="container mx-auto px-4 -mt-10 max-w-2xl pb-12">
-              <div className="bg-card rounded-3xl shadow-2xl border border-border p-6 md:p-8 mt-[55px] mb-[55px]">
+              <div className="bg-card rounded-3xl shadow-2xl border border-border p-6 md:p-8 rounded-tl-[24px] rounded-tr-[24px] rounded-br-[24px] rounded-bl-[24px] mt-[55px] mb-[55px]">
                 <h3 className="text-xl font-serif font-bold text-foreground mb-5 flex items-center gap-2">
                   <Medal className="w-5 h-5 text-primary" /> 孝文化知识排行榜
                 </h3>
