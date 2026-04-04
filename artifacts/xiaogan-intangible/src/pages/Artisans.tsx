@@ -13,7 +13,7 @@ export default function Artisans() {
       item: "孝感雕花剪纸",
       years: 50,
       avatar:
-        "https://ts1.tc.mm.bing.net/th/id/R-C.abfd04315437b9a9cf7dbb8734f84a1a?rik=yPapn7WMp%2fsiVA&riu=http%3a%2f%2fhbrbapp.hubeidaily.net%2f0158121e-fb70-4448-bbb8-6c14492a7cac&ehk=Jz%2bQ3xSfDQvflP%2f%2b1Gs1inqp9EplELQXJiGT8y2YR8M%3d&risl=&pid=ImgRaw&r=0",
+        "	https://5b0988e595225.cdn.sohucs.com/images/20180630/c215e07db21c40c4b5469b08b52239c0.jpeg",
       services: ["剪纸体验课", "私人定制"],
     },
     {
