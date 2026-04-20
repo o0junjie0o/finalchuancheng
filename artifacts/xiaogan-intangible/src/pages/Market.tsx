@@ -5,13 +5,14 @@ import { useToast } from "@/hooks/use-toast";
 export default function Market() {
   const { toast } = useToast();
 
+  const base = import.meta.env.BASE_URL;
   const products = [
-    { id: 1, name: "百孝图 雕花剪纸长卷", price: 280, author: "管丽芳工作室", image: "https://images.unsplash.com/photo-1584863231364-2edc166de576?auto=format&fit=crop&q=80", rating: 5.0 },
-    { id: 2, name: "云梦皮影 装饰挂件", price: 68, author: "秦礼刚传习所", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80", rating: 4.8 },
-    { id: 3, name: "孝感麻糖 孝心礼盒装", price: 128, author: "孝感市非遗工坊", image: "https://images.unsplash.com/photo-1624462966581-1e5638c11eb5?auto=format&fit=crop&q=80", rating: 4.9 },
-    { id: 4, name: "应城膏雕 平安如意摆件", price: 450, author: "李志明", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80", rating: 5.0 },
-    { id: 5, name: "大学生设计 剪纸风书签", price: 35, author: "湖北工程学院团队", image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80", rating: 4.7 },
-    { id: 6, name: "汉川善书 经典唱段珍藏U盘", price: 88, author: "汉川文化局", image: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80", rating: 4.9 },
+    { id: 1, name: "百孝图 雕花剪纸长卷", price: 280, author: "管丽芳工作室", image: `${base}images/products/p1-papercut-100xiao.png`, rating: 5.0 },
+    { id: 2, name: "云梦皮影 装饰挂件", price: 68, author: "秦礼刚传习所", image: `${base}images/products/p5-shadow-wusong.png`, rating: 4.8 },
+    { id: 3, name: "孝感麻糖 孝心礼盒装", price: 128, author: "孝感市非遗工坊", image: `${base}images/products/p3-masugar-giftbox.png`, rating: 4.9 },
+    { id: 4, name: "应城膏雕 平安如意摆件", price: 450, author: "李志明", image: `${base}images/products/m4-plaster-ruyi.png`, rating: 5.0 },
+    { id: 5, name: "大学生设计 剪纸风书签", price: 35, author: "湖北工程学院团队", image: `${base}images/products/p4-papercut-bookmarks.png`, rating: 4.7 },
+    { id: 6, name: "汉川善书 经典唱段珍藏U盘", price: 88, author: "汉川文化局", image: `${base}images/products/m6-shanshu-usb.png`, rating: 4.9 },
   ];
 
   const handleAddToCart = (name: string) => {

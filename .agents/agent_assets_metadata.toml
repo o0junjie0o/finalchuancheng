@@ -1,0 +1,74 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "vWEi_bZjzLvMw2CTInyVV"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p1-papercut-100xiao.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Yyv4y4Gdxpv8VeBEHsmql"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p2-shadow-keychain.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "kEpSmLKfq7ogSrEwzVKaS"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p3-masugar-giftbox.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "XQatYiYMzWl94TrHGLh55"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p4-papercut-bookmarks.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "wDGTu5rtD9yFevhDyGzyH"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p5-shadow-wusong.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Xez6d-LZRrN-sKNbO86pC"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p6-papercut-calendar.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Yg-CkEXZIA1Bg6csE272F"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p7-makou-teacup.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "_B7RyaNkKHxa4sUYXAk4o"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p8-plaster-lotus.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "EHzAWRoSm75PYFvnEUnsF"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p9-rice-wine-giftbox.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "1XyjLLagqZovJlBhZbtVN"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/p10-papercut-totebag.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Nl84vkNmLLiQFOlMGoGOH"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/m4-plaster-ruyi.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "T2TU1TH0mfsuO6l0-C2Vi"
+uri = "file://artifacts/xiaogan-intangible/public/images/products/m6-shanshu-usb.png"
+type = "image"
+title = "generated_image"
