@@ -16,7 +16,7 @@ const HERITAGE_ITEMS = [
     description:
       "董永传说是孝感最具代表性的非遗项目，讲述了东汉孝子董永卖身葬父，感动天地，与七仙女结缘的动人故事。这一传说深刻体现了中华孝文化的精髓，是孝感孝文化名城的核心IP。董永故里位于孝感市孝南区，保存有完好的董永公园、孝子祠、千年槐荫树等历史遗址。楚剧百日缘、黄梅戏天仙配均源于此传说，影响深远。",
     shortDesc: "孝感孝文化核心IP，天仙配传说发源地，孝子董永的动人故事",
-    imageUrl: "https://so1.360tres.com/t016f02c4365ee7e128.jpg",
+    imageUrl: "/images/heritage/dongyong-legend.png",
     videoUrl: null,
     origin: "孝感市孝南区",
     yearListed: 2006,
@@ -213,8 +213,7 @@ const HERITAGE_ITEMS = [
     description:
       "肖港抬故事是孝感传统民俗活动，每逢节庆，当地居民将历史故事、神话传说以抬阁形式展演，由儿童扮演故事人物，被大人抬着游街，场面宏大壮观，充满浓郁的民间节日气息。",
     shortDesc: "传统节庆民俗，儿童扮演故事人物抬阁游街，场面壮观热闹",
-    imageUrl:
-      "https://ts1.tc.mm.bing.net/th/id/R-C.76c38bfb2b688d98d35c705cdfbef0fa?rik=1ajIQXMh3FKfyg&riu=http%3a%2f%2fszbm.xgrb.cn%3a9999%2fepaper%2fxgrbm%2fhtml%2f2024%2f02%2f20%2f02%2fimages%2f0-2-small.jpg&ehk=XwzTt%2b4%2bVHJkea1BN1rIyW65XW7GR%2fcpYuyAF2qo4uY%3d&risl=&pid=ImgRaw&r=0",
+    imageUrl: "/images/heritage/xiaogang-taigushi.png",
     videoUrl: null,
     origin: "孝感市孝昌县肖港镇",
     yearListed: 2015,

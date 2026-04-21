@@ -73,7 +73,7 @@ export default function HeritageDetail() {
           src={
             item.imageUrl?.startsWith("http")
               ? item.imageUrl
-              : `${import.meta.env.BASE_URL}${item.imageUrl}`
+              : `${import.meta.env.BASE_URL}${item.imageUrl?.startsWith("/") ? item.imageUrl.slice(1) : item.imageUrl}`
           }
           alt={`${item.name} - 孝感${item.category}非遗项目实拍`}
           className="w-full h-full object-cover object-center"
