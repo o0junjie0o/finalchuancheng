@@ -16,7 +16,7 @@ const activities: Activity[] = [
   {
     id: 1,
     title: "孝感雕花剪纸体验工坊",
-    img: "https://nate.org.cn/upload/default/20240125/2627cfc9cda2180d407743401a91b50b.jpg",
+    img: `${import.meta.env.BASE_URL}images/activities/a1-papercut-workshop.png`,
     status: "upcoming",
     date: "2026-04-28 09:00–12:00",
     location: "孝感市非遗传习所（孝南区槐荫大道88号）",
@@ -26,7 +26,7 @@ const activities: Activity[] = [
   {
     id: 2,
     title: "云梦皮影戏专场演出",
-    img: "https://ts2.tc.mm.bing.net/th/id/OIP-C.rcRO5bw4r3J75SMHzj_Y4AHaG3?rs=1&pid=ImgDetMain&o=7&rm=3",
+    img: `${import.meta.env.BASE_URL}images/activities/a2-shadow-show.png`,
     status: "ongoing",
     date: "2026-04-27 14:00–16:00",
     location: "湖北工程学院",
@@ -36,7 +36,7 @@ const activities: Activity[] = [
   {
     id: 3,
     title: "汉川善书进校园公益活动",
-    img: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800",
+    img: `${import.meta.env.BASE_URL}images/activities/a3-shanshu-campus.png`,
     status: "upcoming",
     date: "2026-04-29 14:00–16:30",
     location: "湖北工程学院湛林体育馆",
@@ -46,7 +46,7 @@ const activities: Activity[] = [
   {
     id: 4,
     title: "孝感麻糖手工制作体验",
-    img: "https://ts1.tc.mm.bing.net/th/id/R-C.b4ac486362602744c61c7e8ce98ff188?rik=x03fBmKohnIVUw&riu=http%3a%2f%2fnews.cjn.cn%2fcsqpd%2fxg_20007%2f202410%2fW020241015364960048645.jpg&ehk=uniRYo5X9AapyKPz%2fgJkb5%2fYOrreRuBg9NN2jRCkfCs%3d&risl=&pid=ImgRaw&r=0",
+    img: `${import.meta.env.BASE_URL}images/activities/a4-masugar-workshop.png`,
     status: "upcoming",
     date: "2026-04-30 10:00–12:00",
     location: "孝感市非遗美食坊（孝南区中山路56号）",
@@ -56,7 +56,7 @@ const activities: Activity[] = [
   {
     id: 5,
     title: "董永传说文化节开幕式",
-    img: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=800",
+    img: `${import.meta.env.BASE_URL}images/activities/a5-dongyong-festival.png`,
     status: "past",
     date: "2026-04-01 13:00–17:00",
     location: "孝感市董永公园主广场",

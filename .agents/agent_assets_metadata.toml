@@ -84,3 +84,33 @@ id = "YisH5lQeYAKLJ6TksK8_p"
 uri = "file://artifacts/xiaogan-intangible/public/images/heritage/xiaogang-taigushi.png"
 type = "image"
 title = "generated_image"
+
+[[generated]]
+id = "T7MQx3bNh6uy16QJLgEvD"
+uri = "file://artifacts/xiaogan-intangible/public/images/activities/a1-papercut-workshop.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "2PfzAYO7fIrhP5QpIIEz6"
+uri = "file://artifacts/xiaogan-intangible/public/images/activities/a2-shadow-show.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "nIia4Yd_6EVUV80_GL4qc"
+uri = "file://artifacts/xiaogan-intangible/public/images/activities/a3-shanshu-campus.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "1Bw1wV6F7lHBTl7UUPxK0"
+uri = "file://artifacts/xiaogan-intangible/public/images/activities/a4-masugar-workshop.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "_UmXnsTK2iKkdyomaL7VY"
+uri = "file://artifacts/xiaogan-intangible/public/images/activities/a5-dongyong-festival.png"
+type = "image"
+title = "generated_image"
