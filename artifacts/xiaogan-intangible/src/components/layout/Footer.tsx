@@ -39,9 +39,6 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} 版权归湖北工程学院创新实验室所有
           </p>
-          <div className="flex gap-4 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">服务条款</a>
-          </div>
         </div>
       </div>
     </footer>
