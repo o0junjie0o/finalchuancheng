@@ -31,7 +31,6 @@ export function Footer() {
             <h4 className="font-serif font-bold text-lg mb-6 text-foreground">联系我们</h4>
             <ul className="flex flex-col gap-3 text-muted-foreground">
               <li>地址：湖北工程学院</li>
-              <li>邮箱：contact@xiaogan-heritage.cn</li>
             </ul>
           </div>
         </div>
