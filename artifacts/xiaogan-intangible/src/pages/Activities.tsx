@@ -121,15 +121,6 @@ const activities: Activity[] = [
     totalQuota: 300,
     registered: 0,
   },
-  {
-    id: 10,
-    title: "2026孝感非遗年度盛典",
-    img: `${import.meta.env.BASE_URL}images/activities/a10-yearend-gala.png`,
-    date: "2026-12-12 18:30–21:30",
-    location: "湖北工程学院体育馆",
-    totalQuota: 1000,
-    registered: 0,
-  },
 ];
 
 export default function Activities() {
