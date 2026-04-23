@@ -712,6 +712,29 @@ const ACTIVITIES = [
   },
 ] as const;
 
+// 修正历史数据中失效/境外不可访问的图片地址，每次启动都执行（幂等）
+async function fixupLegacyImageUrls() {
+  const fixups: Array<{ id: number; url: string }> = [
+    { id: 1, url: "/images/heritage/dongyong-legend.png" },
+    { id: 12, url: "/images/heritage/xiaogang-taigushi.png" },
+  ];
+  for (const { id, url } of fixups) {
+    try {
+      const result = await db.execute(
+        sql`UPDATE ${heritageItemsTable} SET image_url = ${url} WHERE id = ${id} AND image_url <> ${url}`,
+      );
+      const affected = (result as any)?.rowCount ?? 0;
+      if (affected > 0) {
+        console.log(
+          `[seed] 修正 heritage_items id=${id} 图片地址 -> ${url}`,
+        );
+      }
+    } catch (err) {
+      console.warn(`[seed] 修正 heritage_items id=${id} 图片失败:`, err);
+    }
+  }
+}
+
 export async function autoSeedIfEmpty() {
   try {
     const [{ count }] = await db
@@ -721,6 +744,7 @@ export async function autoSeedIfEmpty() {
       console.log(
         `[seed] Database already has ${count} heritage items, skipping seed.`,
       );
+      await fixupLegacyImageUrls();
       return;
     }
 
