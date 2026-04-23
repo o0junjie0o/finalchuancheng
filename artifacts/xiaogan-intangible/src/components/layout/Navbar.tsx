@@ -1,6 +1,6 @@
 import { Link, useRoute } from "wouter";
 import { motion } from "framer-motion";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { clsx } from "clsx";
 
@@ -38,12 +38,6 @@ export function Navbar() {
               <NavItem key={item.path} {...item} />
             ))}
           </nav>
-
-          <div className="hidden md:flex items-center gap-4">
-            <button className="p-2 text-primary hover:bg-primary/5 rounded-full transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
-          </div>
 
           <button 
             className="md:hidden p-2 text-primary"
