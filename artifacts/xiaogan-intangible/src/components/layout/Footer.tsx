@@ -37,7 +37,7 @@ export function Footer() {
         
         <div className="border-t border-primary/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} 版权归湖北工程学院创新实验室所有
+            © {new Date().getFullYear()} 版权归  湖北工程学院机器人创新实验室  所有
           </p>
         </div>
       </div>
