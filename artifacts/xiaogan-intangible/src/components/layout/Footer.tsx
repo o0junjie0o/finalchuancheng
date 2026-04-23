@@ -37,7 +37,7 @@ export function Footer() {
         
         <div className="border-t border-primary/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} 孝感市非物质文化遗产保护中心 
+            © {new Date().getFullYear()} 版权归湖北工程学院创新实验室所有
           </p>
           <div className="flex gap-4 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">隐私政策</a>
