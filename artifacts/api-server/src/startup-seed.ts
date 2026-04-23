@@ -7,6 +7,111 @@ import {
 } from "@workspace/db";
 import { sql } from "drizzle-orm";
 
+// 确保数据库表存在（生产环境首次部署时会执行建表）
+async function ensureSchema() {
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS heritage_items (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      name_en TEXT,
+      level TEXT NOT NULL,
+      category TEXT NOT NULL,
+      description TEXT NOT NULL,
+      short_desc TEXT NOT NULL,
+      image_url TEXT NOT NULL,
+      video_url TEXT,
+      origin TEXT,
+      year_listed INTEGER,
+      artisan_count INTEGER DEFAULT 0,
+      tags JSON DEFAULT '[]',
+      featured BOOLEAN DEFAULT FALSE,
+      xiao_theme BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS artisans (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      level TEXT NOT NULL,
+      heritage_item TEXT NOT NULL,
+      heritage_item_id INTEGER,
+      bio TEXT NOT NULL,
+      avatar_url TEXT NOT NULL,
+      years_of_practice INTEGER,
+      awards JSON DEFAULT '[]',
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS artisan_services (
+      id SERIAL PRIMARY KEY,
+      artisan_id INTEGER NOT NULL,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      description TEXT,
+      price DECIMAL(10,2) NOT NULL,
+      duration TEXT,
+      max_participants INTEGER
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS quiz_questions (
+      id SERIAL PRIMARY KEY,
+      question TEXT NOT NULL,
+      options JSON NOT NULL,
+      correct_answer INTEGER NOT NULL,
+      explanation TEXT NOT NULL,
+      difficulty TEXT NOT NULL,
+      category TEXT,
+      points INTEGER DEFAULT 10
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS products (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      category TEXT NOT NULL,
+      description TEXT NOT NULL,
+      price DECIMAL(10,2) NOT NULL,
+      image_url TEXT NOT NULL,
+      artisan_name TEXT,
+      heritage_item TEXT,
+      stock INTEGER DEFAULT 0,
+      rating DECIMAL(3,1) DEFAULT 5.0,
+      review_count INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS activities (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      description TEXT NOT NULL,
+      type TEXT NOT NULL,
+      location TEXT NOT NULL,
+      start_date TEXT NOT NULL,
+      end_date TEXT,
+      image_url TEXT NOT NULL,
+      status TEXT NOT NULL,
+      registration_url TEXT,
+      max_participants INTEGER,
+      current_participants INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS quiz_leaderboard (
+      id SERIAL PRIMARY KEY,
+      nickname TEXT NOT NULL,
+      correct INTEGER NOT NULL,
+      time INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  console.log("[seed] 数据库表结构已就绪");
+}
+
 const HERITAGE_ITEMS = [
   {
     name: "董永传说",
@@ -737,6 +842,9 @@ async function fixupLegacyImageUrls() {
 
 export async function autoSeedIfEmpty() {
   try {
+    // 首先确保所有表结构存在（生产环境首次部署时创建表）
+    await ensureSchema();
+
     const [{ count }] = await db
       .select({ count: sql<number>`count(*)` })
       .from(heritageItemsTable);
