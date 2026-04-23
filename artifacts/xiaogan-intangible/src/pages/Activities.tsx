@@ -5,19 +5,45 @@ type Activity = {
   id: number;
   title: string;
   img: string;
-  status: "ongoing" | "upcoming" | "past";
   date: string;
   location: string;
   totalQuota: number;
   registered: number;
 };
 
+type ActivityStatus = "ongoing" | "upcoming" | "past";
+
+// 基于活动日期字符串自动计算状态
+// 支持格式: "2026-04-28 09:00–12:00" 兼容多种连字符: – — - ~ 至
+function getActivityStatus(dateStr: string): ActivityStatus {
+  const match = dateStr.match(
+    /^(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*[–—\-~至]\s*(\d{1,2}):(\d{2})/,
+  );
+  if (!match) {
+    // 解析失败时按"已结束"处理，避免误开放过期/无效活动报名
+    if (typeof console !== "undefined") {
+      console.warn(`[Activities] 无法解析活动时间: "${dateStr}"`);
+    }
+    return "past";
+  }
+  const [, day, sH, sM, eH, eM] = match;
+  const start = new Date(
+    `${day}T${sH.padStart(2, "0")}:${sM.padStart(2, "0")}:00`,
+  ).getTime();
+  const end = new Date(
+    `${day}T${eH.padStart(2, "0")}:${eM.padStart(2, "0")}:00`,
+  ).getTime();
+  const now = Date.now();
+  if (now > end) return "past";
+  if (now >= start) return "ongoing";
+  return "upcoming";
+}
+
 const activities: Activity[] = [
   {
     id: 1,
     title: "孝感雕花剪纸体验工坊",
     img: `${import.meta.env.BASE_URL}images/activities/a1-papercut-workshop.png`,
-    status: "upcoming",
     date: "2026-04-28 09:00–12:00",
     location: "孝感市非遗传习所（孝南区槐荫大道88号）",
     totalQuota: 100,
@@ -27,7 +53,6 @@ const activities: Activity[] = [
     id: 2,
     title: "云梦皮影戏专场演出",
     img: `${import.meta.env.BASE_URL}images/activities/a2-shadow-show.png`,
-    status: "ongoing",
     date: "2026-04-27 14:00–16:00",
     location: "湖北工程学院",
     totalQuota: 80,
@@ -37,7 +62,6 @@ const activities: Activity[] = [
     id: 3,
     title: "汉川善书进校园公益活动",
     img: `${import.meta.env.BASE_URL}images/activities/a3-shanshu-campus.png`,
-    status: "upcoming",
     date: "2026-04-29 14:00–16:30",
     location: "湖北工程学院湛林体育馆",
     totalQuota: 150,
@@ -47,7 +71,6 @@ const activities: Activity[] = [
     id: 4,
     title: "孝感麻糖手工制作体验",
     img: `${import.meta.env.BASE_URL}images/activities/a4-masugar-workshop.png`,
-    status: "upcoming",
     date: "2026-04-30 10:00–12:00",
     location: "孝感市非遗美食坊（孝南区中山路56号）",
     totalQuota: 50,
@@ -57,11 +80,55 @@ const activities: Activity[] = [
     id: 5,
     title: "董永传说文化节开幕式",
     img: `${import.meta.env.BASE_URL}images/activities/a5-dongyong-festival.png`,
-    status: "past",
     date: "2026-04-01 13:00–17:00",
     location: "孝感市董永公园主广场",
     totalQuota: 80,
     registered: 70,
+  },
+  {
+    id: 6,
+    title: "应城膏雕艺术精品展",
+    img: `${import.meta.env.BASE_URL}images/activities/a6-plaster-exhibition.png`,
+    date: "2026-05-18 09:00–17:00",
+    location: "孝感市博物馆（孝南区文化路9号）",
+    totalQuota: 200,
+    registered: 78,
+  },
+  {
+    id: 7,
+    title: "楚剧经典剧目《百日缘》全本展演",
+    img: `${import.meta.env.BASE_URL}images/activities/a7-chuopera.png`,
+    date: "2026-06-28 19:00–21:30",
+    location: "孝感大剧院（孝南区交通大道188号）",
+    totalQuota: 600,
+    registered: 312,
+  },
+  {
+    id: 8,
+    title: "云梦皮影制作技艺暑期工作坊",
+    img: `${import.meta.env.BASE_URL}images/activities/a8-shadow-craft.png`,
+    date: "2026-08-08 09:00–11:30",
+    location: "云梦县秦礼刚皮影传习所",
+    totalQuota: 40,
+    registered: 12,
+  },
+  {
+    id: 9,
+    title: "杨店高龙文化巡演",
+    img: `${import.meta.env.BASE_URL}images/activities/a9-gaolong-dragon.png`,
+    date: "2026-10-17 10:00–12:00",
+    location: "孝昌县杨店镇老街",
+    totalQuota: 300,
+    registered: 0,
+  },
+  {
+    id: 10,
+    title: "2026孝感非遗年度盛典",
+    img: `${import.meta.env.BASE_URL}images/activities/a10-yearend-gala.png`,
+    date: "2026-12-12 18:30–21:30",
+    location: "湖北工程学院体育馆",
+    totalQuota: 1000,
+    registered: 0,
   },
 ];
 
@@ -147,10 +214,11 @@ export default function Activities() {
           {activityList.map((act) => {
             // 计算剩余名额
             const remainingQuota = act.totalQuota - act.registered;
+            // 根据当前时间动态计算活动状态
+            const status = getActivityStatus(act.date);
             // 判断按钮是否可用
             const canSignUp =
-              remainingQuota > 0 &&
-              ["ongoing", "upcoming"].includes(act.status);
+              remainingQuota > 0 && (status === "ongoing" || status === "upcoming");
 
             return (
               <div
@@ -173,16 +241,16 @@ export default function Activities() {
                     <div className="flex items-center gap-3 mb-3">
                       <span
                         className={`px-2.5 py-1 text-xs font-bold rounded-md ${
-                          act.status === "ongoing"
+                          status === "ongoing"
                             ? "bg-red-100 text-red-600"
-                            : act.status === "upcoming"
+                            : status === "upcoming"
                               ? "bg-blue-100 text-blue-600"
                               : "bg-gray-100 text-gray-500"
                         }`}
                       >
-                        {act.status === "ongoing"
+                        {status === "ongoing"
                           ? "进行中"
-                          : act.status === "upcoming"
+                          : status === "upcoming"
                             ? "即将开始"
                             : "已结束"}
                       </span>
