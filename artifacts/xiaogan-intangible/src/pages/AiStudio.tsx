@@ -221,7 +221,6 @@ export default function AiStudio() {
           <ImageModal src={generatedImg} onClose={() => setZoomOpen(false)} />
         )}
       </AnimatePresence>
-
       <div className="min-h-screen bg-background pb-20">
         <div className="container mx-auto px-4 py-16">
           <SectionHeading title="AI 灵感工坊" subtitle="AI Creator Studio">
@@ -336,7 +335,7 @@ export default function AiStudio() {
 
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
                 <Bot className="w-3.5 h-3.5 shrink-0" />
-                <span>豆包文生文 + 文生图 · DOUBAO_API_KEY</span>
+                <span>为避免滥用单个IP做了限额处理，如生成失败，请您刷新网页或更换设备后重试</span>
               </div>
             </div>
 
