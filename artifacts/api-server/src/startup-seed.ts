@@ -136,7 +136,7 @@ const HERITAGE_ITEMS = [
       "孝感麻糖是孝感最著名的传统美食，已有千年历史。以优质芝麻和麦芽糖为主要原料，经过选料、炒制、熬糖、拉丝、成型等十余道工序精心制作而成。孝感麻糖色泽金黄，香甜酥脆，入口化渣，是孝感的地方特产名片，也是走亲访友的佳礼。每年产值超亿元，带动数千农民就业。",
     shortDesc: "千年传统美食，芝麻与麦芽糖精制，孝感特产名片",
     imageUrl:
-      "https://img.phb123.com/uploads/allimg/220923/812-2209231P6290-L.jpg",
+      "https://img.alicdn.com/imgextra/i4/2217580359065/O1CN01lBjspL2GppIA7lrEP_!!2217580359065.jpg",
     videoUrl: null,
     origin: "孝感市区",
     yearListed: 2009,
@@ -172,7 +172,7 @@ const HERITAGE_ITEMS = [
       "云梦鱼面是孝感云梦县的传统特色美食，以鲜鱼肉与面粉为原料，采用独特工艺制作而成。鱼面色泽洁白，口感细腻，营养丰富，是云梦人民世代相传的饮食瑰宝。制作鱼面需要将鲜鱼肉去骨去刺，与面粉混合揉制，经擀制、晾晒等工序而成。",
     shortDesc: "鱼肉与面粉合制，云梦特产，营养细腻口感独特",
     imageUrl:
-      "https://img.phb123.com/uploads/allimg/220923/812-2209231P9230-L.jpg",
+      "https://k.sinaimg.cn/n/sinacn20191203ac/500/w1200h900/20191203/0d52-ikhvemx3608527.jpg/w700d1q75cms.jpg",
     videoUrl: null,
     origin: "孝感市云梦县",
     yearListed: 2013,

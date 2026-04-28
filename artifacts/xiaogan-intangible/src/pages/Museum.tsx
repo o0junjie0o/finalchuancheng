@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useListHeritageItems } from "@workspace/api-client-react";
 import { Search, Utensils, Scissors, Users, ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
+import { resolveHeritageImage } from "@/lib/heritage-images";
 
 const levelColors: Record<string, string> = {
   national: "bg-primary text-white",
@@ -196,13 +197,7 @@ export default function Museum() {
               >
                 <div className="aspect-[4/3] overflow-hidden relative">
                   <img
-                    src={
-                      item.name === "孝感剪纸（民间）"
-                        ? "https://ts1.tc.mm.bing.net/th/id/R-C.b7f1958268be8c446eede4230d4bbb0f?rik=Y70F5t%2fdSJJ%2f8w&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20190925%2f69cab7450ae0445e8481dce1795bd544.JPG&ehk=64wTiqE9fpK8i%2fRUvoxX9OWM%2bdeZX9P5uwv5zuc2pJA%3d&risl=&pid=ImgRaw&r=0"
-                        : item.imageUrl?.startsWith("/")
-                          ? `${import.meta.env.BASE_URL}${item.imageUrl.slice(1)}`
-                          : item.imageUrl
-                    }
+                    src={resolveHeritageImage(item.name, item.imageUrl)}
                     alt={`${item.name} - 孝感${item.category}非遗项目`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

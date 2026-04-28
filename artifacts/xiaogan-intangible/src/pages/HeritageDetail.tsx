@@ -16,6 +16,7 @@ import {
   Users,
 } from "lucide-react";
 import { Link, useRoute } from "wouter";
+import { resolveHeritageImage } from "@/lib/heritage-images";
 
 const levelLabel: Record<string, string> = {
   national: "国家级",
@@ -70,11 +71,7 @@ export default function HeritageDetail() {
       {/* Hero Banner */}
       <div className="relative h-[420px] md:h-[520px] overflow-hidden">
         <img
-          src={
-            item.imageUrl?.startsWith("http")
-              ? item.imageUrl
-              : `${import.meta.env.BASE_URL}${item.imageUrl?.startsWith("/") ? item.imageUrl.slice(1) : item.imageUrl}`
-          }
+          src={resolveHeritageImage(item.name, item.imageUrl)}
           alt={`${item.name} - 孝感${item.category}非遗项目实拍`}
           className="w-full h-full object-cover object-center"
         />
